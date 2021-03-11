@@ -8,11 +8,16 @@
     </li>
   </ul>
   <h1>{{person.name}}</h1>
+  <h1>{{greetings}}</h1>
   <button @click="increase">+1</button>
+  <button @click="updateGreeting">Update Title</button>
 </template>
 
 <script lang="ts">
-import { ref, computed, reactive, toRefs, onMounted, onUpdated, onRenderTriggered } from 'vue'
+import { 
+  ref, computed, reactive, 
+  toRefs, onMounted, onUpdated, 
+  onRenderTriggered, watch } from 'vue'
 interface DataProps {
   count: number;
   double: number;
@@ -46,11 +51,18 @@ export default {
       numbers: [0, 1, 2],
       person: {},
     })
-    data.numbers[0] = 5
-    data.person.name = 'xianglin'
+    const greetings = ref('')
+    const updateGreeting = () => {
+      greetings.value += 'Hello !'
+    }
+    watch([greetings, data], () => {
+      document.title = 'updated' + greetings.value + data.count
+    })
     const refData = toRefs(data)
     return {
       ...refData,
+      greetings,
+      updateGreeting,
     }
   }
 }
