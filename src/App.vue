@@ -17,7 +17,8 @@
 import { 
   ref, computed, reactive, 
   toRefs, onMounted, onUpdated, 
-  onRenderTriggered, watch } from 'vue'
+  onRenderTriggered, } from 'vue'
+import { w, mount } from './utils'
 interface DataProps {
   count: number;
   double: number;
@@ -35,7 +36,7 @@ export default {
     // const increase = () => {
     //   count.value++
     // }
-    onMounted(() => {
+    mount(() => {
       console.log('mounted')
     })
     onUpdated(() => {
@@ -55,7 +56,7 @@ export default {
     const updateGreeting = () => {
       greetings.value += 'Hello !'
     }
-    watch([greetings, data], () => {
+    w([greetings, data], () => {
       document.title = 'updated' + greetings.value + data.count
     })
     const refData = toRefs(data)
