@@ -9,6 +9,8 @@
   </ul>
   <h1>{{person.name}}</h1>
   <h1>{{greetings}}</h1>
+  <h1 v-if="loading">Loading!......</h1>
+  <img v-if="loaded" :src="result.message" >
   <h1>X: {{x}}, Y: {{y}}</h1>
   <button @click="increase">+1</button>
   <button @click="updateGreeting">Update Title</button>
@@ -21,6 +23,7 @@ import {
   onRenderTriggered, onUnmounted } from 'vue'
 import { w, mount } from './utils'
 import useMousePostion from './hooks/useMousePosition'
+import useURLLoader from './hooks/useURLoader'
 interface DataProps {
   count: number;
   double: number;
@@ -55,6 +58,7 @@ export default {
       person: {},
     })
     const { x, y } = useMousePostion()
+    const { result, loading, loaded } = useURLLoader('https://dog.ceo/api/breeds/image/random')
     const greetings = ref('')
     const updateGreeting = () => {
       greetings.value += 'Hello !'
@@ -69,6 +73,9 @@ export default {
       updateGreeting,
       x, 
       y,
+      result,
+      loading,
+      loaded,
     }
   }
 }
