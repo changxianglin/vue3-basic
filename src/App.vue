@@ -10,9 +10,10 @@
   <h1>{{person.name}}</h1>
   <h1>{{greetings}}</h1>
   <h1 v-if="loading">Loading!......</h1>
+  <button @click="openModal">Open Modal</button>
   <img v-if="loaded" :src="result[0].url" >
   <h1>X: {{x}}, Y: {{y}}</h1>
-  <modal />
+  <modal :isOpen="modalIsOpen" @close-modal="onModalClose">My Modal!!!</modal>
   <button @click="increase">+1</button>
   <button @click="updateGreeting">Update Title</button>
 </template>
@@ -87,6 +88,13 @@ export default {
       document.title = 'updated' + greetings.value + data.count
     })
     const refData = toRefs(data)
+    const modalIsOpen = ref(false)
+    const openModal = () => {
+      modalIsOpen.value = true
+    }
+    const onModalClose = () => {
+      modalIsOpen.value = false
+    }
     return {
       ...refData,
       greetings,
@@ -96,6 +104,9 @@ export default {
       result,
       loading,
       loaded,
+      modalIsOpen,
+      openModal,
+      onModalClose,
     }
   }
 }
