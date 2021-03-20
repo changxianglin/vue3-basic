@@ -9,6 +9,7 @@
   </ul>
   <h1>{{person.name}}</h1>
   <h1>{{greetings}}</h1>
+  <h1>X: {{x}}, Y: {{y}}</h1>
   <button @click="increase">+1</button>
   <button @click="updateGreeting">Update Title</button>
 </template>
@@ -17,8 +18,9 @@
 import { 
   ref, computed, reactive, 
   toRefs, onMounted, onUpdated, 
-  onRenderTriggered, } from 'vue'
+  onRenderTriggered, onUnmounted } from 'vue'
 import { w, mount } from './utils'
+import useMousePostion from './hooks/useMousePosition'
 interface DataProps {
   count: number;
   double: number;
@@ -52,6 +54,7 @@ export default {
       numbers: [0, 1, 2],
       person: {},
     })
+    const { x, y } = useMousePostion()
     const greetings = ref('')
     const updateGreeting = () => {
       greetings.value += 'Hello !'
@@ -64,6 +67,8 @@ export default {
       ...refData,
       greetings,
       updateGreeting,
+      x, 
+      y,
     }
   }
 }
