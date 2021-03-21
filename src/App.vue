@@ -9,6 +9,14 @@
   </ul>
   <h1>{{person.name}}</h1>
   <h1>{{greetings}}</h1>
+  <Suspense>
+    <template #default>
+      <async-show />
+    </template>
+    <template #fallback>
+      <h1>Loading !...</h1>
+    </template>
+  </Suspense>
   <h1 v-if="loading">Loading!......</h1>
   <button @click="openModal">Open Modal</button>
   <img v-if="loaded" :src="result[0].url" >
@@ -27,6 +35,7 @@ import { w, mount } from './utils'
 import useMousePostion from './hooks/useMousePosition'
 import useURLLoader from './hooks/useURLoader'
 import modal from './components/Modal.vue'
+import AsyncShow from './components/AsyncShow.vue'
 interface DataProps {
   count: number;
   double: number;
@@ -48,6 +57,7 @@ export default {
   name: 'App',
   components: {
     modal,
+    AsyncShow,
   },
   setup() {
     // const count = ref(0)
