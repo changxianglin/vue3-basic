@@ -9,9 +9,13 @@
   </ul>
   <h1>{{person.name}}</h1>
   <h1>{{greetings}}</h1>
+  <p>{{error}}</p>
   <Suspense>
     <template #default>
-      <async-show />
+      <div>
+        <async-show />
+         <dog-show />
+      </div>
     </template>
     <template #fallback>
       <h1>Loading !...</h1>
@@ -30,12 +34,13 @@
 import { 
   ref, computed, reactive, 
   toRefs, onMounted, onUpdated, 
-  onRenderTriggered, onUnmounted, watch } from 'vue'
+  onRenderTriggered, onUnmounted, watch, onErrorCaptured } from 'vue'
 import { w, mount } from './utils'
 import useMousePostion from './hooks/useMousePosition'
 import useURLLoader from './hooks/useURLoader'
 import modal from './components/Modal.vue'
 import AsyncShow from './components/AsyncShow.vue'
+import DogShow from './components/DosShow.vue'
 interface DataProps {
   count: number;
   double: number;
@@ -58,6 +63,7 @@ export default {
   components: {
     modal,
     AsyncShow,
+    DogShow,
   },
   setup() {
     // const count = ref(0)
@@ -67,6 +73,11 @@ export default {
     // const increase = () => {
     //   count.value++
     // }
+    const error = ref(null)
+    onErrorCaptured((e: any) => {
+      error.value = e
+      return true
+    })
     mount(() => {
       console.log('mounted')
     })
@@ -117,6 +128,7 @@ export default {
       modalIsOpen,
       openModal,
       onModalClose,
+      error,
     }
   }
 }
